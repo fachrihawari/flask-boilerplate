@@ -11,3 +11,7 @@ BLUEPRINT_DIRECTORY = 'blueprints'
 BLUEPRINTS = [
     'core',
 ]
+
+
+
+

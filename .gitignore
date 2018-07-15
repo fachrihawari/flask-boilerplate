@@ -1,6 +1,5 @@
+.vscode
+config.py
 env
 migrations
-.vscode
 __pycache__
-config/development.py
-config/production.py

@@ -12,18 +12,10 @@ def create_app():
     '''
     Create an app instance
     '''
-
-    # Get current env
-    currentEnv = getenv('FLASK_ENV')
-    if currentEnv is None:
-        currentEnv = 'production'
-
-    # Generate path
-    config_path = path.join(path.abspath(path.dirname(__name__)), 'config', currentEnv + '.py')
-
+    
     # Create and configure the app
     app = Flask(__name__)
-    app.config.from_pyfile(config_path)
+    app.config.from_pyfile('config.py')
     
     # Assign model and migrations to app
     db.init_app(app)
