@@ -10,7 +10,7 @@ class User(db.Model):
     email = Column(String, unique=True, nullable=False)
     password = Column(String(60), nullable=False)
 
-    role = Column(Enum('admin', 'member'))
+    role = Column(Enum('admin', 'member', name='user_role'), nullable=False, server_default='member')
 
     is_active = Column(Boolean, default=False)
     is_confirm = Column(Boolean, default=False)
