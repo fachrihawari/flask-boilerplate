@@ -1,4 +1,4 @@
-from os import path, getenv
+from os import path
 
 from flask import Flask
 from flask_migrate import Migrate
@@ -16,7 +16,7 @@ def create_app():
     # Create and configure the app
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
-    
+
     # Assign model and migrations to app
     db.init_app(app)
     migrate.init_app(app, db)
@@ -24,7 +24,20 @@ def create_app():
     # Call blueprint autoloader
     autoloader(app)
 
+    # Setup jinja
+    setup_jinja(app)
+
     return app
+
+def setup_jinja(app):
+    '''
+    Setup jinja
+    '''
+
+    @app.template_filter('config')
+    def config(key, default=None):
+        print(key, default)
+        return app.config.get(key) or default
 
 def autoloader(app):
     '''
