@@ -17,6 +17,8 @@ class User(db.Model):
     
     confirmation_token = Column(String(60))
     remember_token = Column(String(60))
+
+    avatar = Column(String)
     
     role_id = Column(Integer, ForeignKey('roles.id'))
 
