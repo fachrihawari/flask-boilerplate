@@ -1,4 +1,6 @@
-from sqlalchemy import Column, Integer, String, Date, Boolean, SmallInteger
+from datetime import datetime
+
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, SmallInteger
 
 from bootstrap import db
 
@@ -8,9 +10,10 @@ class Menu(db.Model):
     id = Column(Integer, primary_key=True)
     label = Column(String(35), nullable=False)
     target = Column(String, nullable=False) # path/link as menu target
-    parent = Column(Integer) # make a menu as parent
+    parent_id = Column(Integer) # make a menu as parent
     position = Column(SmallInteger) # position number of menu
-    is_active = Column(Boolean, default=False)
+    group = Column(String(30), nullable=False)
+    is_active = Column(Boolean, default=False, server_default='False')
 
-    created_at = Column(Date)
-    updated_at = Column(Date)
+    created_at = Column(DateTime, default=datetime.now())
+    updated_at = Column(DateTime, onupdate=datetime.now())

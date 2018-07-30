@@ -1,4 +1,6 @@
-from sqlalchemy import Column, Integer, String, Date, Text, Boolean
+from datetime import datetime
+
+from sqlalchemy import Column, Integer, String, DateTime, Text, Boolean
 
 from bootstrap import db
 
@@ -9,7 +11,7 @@ class Page(db.Model):
     title = Column(String, nullable=False)
     slug = Column(String, nullable=False, unique=True)
     content = Column(Text)
-    is_active = Column(Boolean, default=False)
+    is_active = Column(Boolean, default=False, server_default='False')
     
-    created_at = Column(Date)
-    updated_at = Column(Date)
+    created_at = Column(DateTime, default=datetime.now())
+    updated_at = Column(DateTime, onupdate=datetime.now())
