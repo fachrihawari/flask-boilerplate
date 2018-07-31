@@ -34,10 +34,16 @@ def setup_jinja(app):
     Setup jinja
     '''
 
+    # Get config with filter
     @app.template_filter('config')
     def config(key, default=None):
         print(key, default)
         return app.config.get(key) or default
+
+    # Share data to variable
+    @app.context_processor
+    def inject_admin_menu():
+        return dict(admin_menu="grrr")
 
 def autoloader(app):
     '''
@@ -55,14 +61,14 @@ def autoloader(app):
     from werkzeug.utils import import_string
 
     # Load every blueprint
-    for blueprint_path in app.config['BLUEPRINTS']:
-        # __name__ + '.' +
-        real_path = app.config['BLUEPRINT_DIRECTORY'] + '.' + blueprint_path + '.' + blueprint_path
-        blueprint = import_string(real_path, silent=True)
+    for blueprint_name in app.config['BLUEPRINTS']:
+
+        blueprint_path = __name__ + '.' + app.config['BLUEPRINT_DIRECTORY'] + '.' + blueprint_name + '.' + blueprint_name
+        blueprint_instance = import_string(blueprint_path, silent=False)
 
         # Check if blueprint exists
-        if (blueprint is None):
-            print('   \u2715 ' + str.capitalize(blueprint_path) + ' failed to load...')
+        if (blueprint_instance is None):
+            print('   \u2715 ' + str.capitalize(blueprint_name) + ' failed to load...')
         else:
-            app.register_blueprint(blueprint)
-            print('   \u2713 ' + str.capitalize(blueprint_path) + ' loaded...')
+            app.register_blueprint(blueprint_instance)
+            print('   \u2713 ' + str.capitalize(blueprint_name) + ' loaded...')

@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, DateTime, Text, Boolean
 
-from bootstrap import db
+from .... import db
 
 class Page(db.Model):
     __tablename__ = 'pages'
@@ -15,3 +15,6 @@ class Page(db.Model):
     
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, onupdate=datetime.now())
+
+    def __repr__(self):
+        return '<Page %r>' % self.title

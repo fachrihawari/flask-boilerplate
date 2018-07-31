@@ -1,8 +1,9 @@
 from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
+from sqlalchemy.orm import relationship, backref
 
-from bootstrap import db
+from .... import db
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -20,10 +21,14 @@ class User(db.Model):
 
     avatar = Column(String)
     
-    role_id = Column(Integer, ForeignKey('roles.id'))
+    role_id = Column(Integer, ForeignKey('roles.id'), nullable=False)
+    role = relationship('Role', backref='users', lazy=True)
 
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, onupdate=datetime.now())
+
+    def __repr__(self):
+        return '<User %r>' % self.name
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -34,15 +39,20 @@ class Role(db.Model):
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, onupdate=datetime.now())
 
+    def __repr__(self):
+        return '<Role %r>' % self.name
+
 class Permission(db.Model):
     __tablename__ = 'permissions'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(30), nullable=False)
-    parent_id = Column(Integer, ForeignKey('permissions.id', ondelete='cascade'))
-
+    group = Column(String(30), nullable=False)
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, onupdate=datetime.now())
+
+    def __repr__(self):
+        return '<Permission %r>' % self.name
 
 class PermissionRole(db.Model):
     __tablename__ = 'permission_role'

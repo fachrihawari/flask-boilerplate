@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, SmallInteger
 
-from bootstrap import db
+from .... import db
 
 class Menu(db.Model):
     __tablename__ = 'menus'
@@ -17,3 +17,6 @@ class Menu(db.Model):
 
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, onupdate=datetime.now())
+
+    def __repr__(self):
+        return '<Menu %r>' % self.label
