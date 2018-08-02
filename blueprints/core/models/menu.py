@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, SmallInteger
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, SmallInteger, ForeignKey
 
 from .... import db
 
@@ -14,6 +14,7 @@ class Menu(db.Model):
     position = Column(SmallInteger) # position number of menu
     group = Column(String(30), nullable=False)
     is_active = Column(Boolean, default=False, server_default='False')
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, onupdate=datetime.now())
