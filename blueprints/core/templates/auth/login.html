@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{ 'APPLICATION_NAME' | config }} | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="/static/js/plugins/font-awesome/css/font-awesome.min.css" />
+
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/static/css/adminlte.min.css" />
+
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            {{ 'APPLICATION_NAME' | config }}
+        </div>
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Sign in to start your session</p>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <i class="icon fa fa-ban"></i> {{ message }}
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="input-group mb-3">
+                        {{ form.email(class="form-control", placeholder="Email") }}
+                        <div class="input-group-append">
+                            <span class="fa fa-envelope input-group-text"></span>
+                        </div>
+                    </div>
+                    {% for error in form.email.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                    <div class="input-group mb-3">
+                        {{ form.password(class="form-control", placeholder="Password") }}
+                        <div class="input-group-append">
+                            <span class="fa fa-lock input-group-text"></span>
+                        </div>
+                    </div>
+                    {% for error in form.password.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="checkbox">
+                                <label>
+                                    {{ form.remember_me() }} {{ form.remember_me.label }}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+    <!-- /.login-box -->
+
+    <!-- Required Script -->
+    <script src="/static/js/plugins/jquery/jquery.min.js"></script>
+    <script src="/static/js/plugins/popper/umd/popper.min.js"></script>
+    <script src="/static/js/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Theme Script -->
+    <script src="/static/js/adminlte.min.js"></script>
+</body>
+
+</html>

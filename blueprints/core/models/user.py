@@ -2,6 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship, backref
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from .... import db
 
@@ -11,7 +12,7 @@ class User(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False)
     email = Column(String, nullable=False, unique=True)
-    password = Column(String(60), nullable=False)
+    password = Column(String, nullable=False)
 
     is_active = Column(Boolean, default=False, server_default='False')
     is_confirm = Column(Boolean, default=False, server_default='False')
@@ -24,8 +25,25 @@ class User(db.Model):
     role_id = Column(Integer, ForeignKey('roles.id'), nullable=False)
     role = relationship('Role', backref='users', lazy=True)
 
+    is_authenticated = db.Column(db.Boolean, default=False)
+    last_authenticated = Column(DateTime)
+
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, onupdate=datetime.now())
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+    
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+    def get_id(self):
+        """Return the id to satisfy Flask-Login's requirements."""
+        return self.id
+
+    def is_anonymous(self):
+        """False, as anonymous users aren't supported."""
+        return False
 
     def __repr__(self):
         return '<User %r>' % self.name

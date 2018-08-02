@@ -1,12 +1,14 @@
 from os import path
 
 from flask import Flask
+from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
 # Init model and migrations
 db = SQLAlchemy()
 migrate = Migrate()
+login_manager = LoginManager()
 
 def create_app():
     '''
@@ -20,14 +22,28 @@ def create_app():
     # Assign model and migrations to app
     db.init_app(app)
     migrate.init_app(app, db)
+    login_manager.init_app(app)
 
     # Call blueprint autoloader
     autoloader(app)
+
+    # Setup login
+    setup_login(login_manager)
 
     # Setup jinja
     setup_jinja(app)
 
     return app
+
+def setup_login(login_manager):
+    '''
+    Setup login
+    '''    
+    from .blueprints.core.models.user import User
+
+    @login_manager.user_loader
+    def user_loader(id):
+        return User.query.get(int(id))
 
 def setup_jinja(app):
     '''
