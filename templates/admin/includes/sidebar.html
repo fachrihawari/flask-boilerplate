@@ -22,7 +22,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                 {% for menu in admin_sidebar_menu %}
-                    {% if current_user.has_access(menu.target): %}
+                    {% if current_user.has_access(menu.target + '/index', True): %}
                         <li class="nav-item">
                             <a href="{{ '/admin' + menu.target }}" class="nav-link {{ 'active' if request.path == '/admin' + menu.target  }}">
                                 <i class="nav-icon {{ menu.icon }}"></i>

@@ -46,8 +46,12 @@ class User(db.Model):
         return False
 
     # Check if user have access to menu
-    def has_access(self, target, method='index'):
-        permission_name = target.strip('/') + '.' + method
+    def has_access(self, permission_name, is_path=False):
+        if is_path:
+            permission_name = permission_name.replace('//', '.').replace('/', '.').strip('.')
+        
+        print(permission_name)
+
         for permission in self.role.permissions:
             if permission.name == permission_name:
                 return True

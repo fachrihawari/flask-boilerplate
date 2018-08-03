@@ -1,5 +1,5 @@
 from flask import render_template, redirect, render_template, url_for, abort, flash, request
-from flask_login import login_user, logout_user, current_user, login_required
+from flask_login import login_user, logout_user, current_user
 from datetime import datetime
 
 from .... import db
