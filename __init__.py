@@ -59,8 +59,13 @@ def setup_jinja(app):
     # Share data to variable
     @app.context_processor
     def inject_admin_menu():
-        return dict(admin_menu="grrr")
-
+        '''
+        Load admin menu
+        '''    
+        from .blueprints.core.models.menu import Menu
+        menu = Menu.query.filter(Menu.group == 'admin.sidebar').order_by(Menu.position).all()
+        return dict(admin_sidebar_menu=menu)
+        
 def autoloader(app):
     '''
     Autoload defined blueprint on BLUEPRINTS from config.py

@@ -14,6 +14,7 @@ class Menu(db.Model):
     position = Column(SmallInteger) # position number of menu
     group = Column(String(30), nullable=False)
     is_active = Column(Boolean, default=False, server_default='False')
+    icon = Column(String(30))
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
     created_at = Column(DateTime, default=datetime.now())

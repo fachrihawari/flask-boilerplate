@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Table
 from sqlalchemy.orm import relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -45,14 +45,32 @@ class User(db.Model):
         """False, as anonymous users aren't supported."""
         return False
 
+    # Check if user have access to menu
+    def has_access(self, target, method='index'):
+        permission_name = target.strip('/') + '.' + method
+        for permission in self.role.permissions:
+            if permission.name == permission_name:
+                return True
+
+        return False
+
     def __repr__(self):
         return '<User %r>' % self.name
+
+role_permission = db.Table('role_permission',
+    db.Column('role_id', db.Integer, db.ForeignKey('roles.id'), primary_key=True),
+    db.Column('permission_id', db.Integer, db.ForeignKey('permissions.id'), primary_key=True),
+    db.Column('attached_at', db.DateTime, default=datetime.now())
+)
+
 
 class Role(db.Model):
     __tablename__ = 'roles'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(15), nullable=False)
+    permissions = relationship('Permission', secondary=role_permission, lazy='subquery',
+        backref=backref('roles', lazy=True))
 
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, onupdate=datetime.now())
@@ -71,13 +89,3 @@ class Permission(db.Model):
 
     def __repr__(self):
         return '<Permission %r>' % self.name
-
-class PermissionRole(db.Model):
-    __tablename__ = 'permission_role'
-
-    id = Column(Integer, primary_key=True)
-    role_id = Column(Integer, ForeignKey('roles.id', ondelete='cascade'), nullable=False)
-    permission_id = Column(Integer, ForeignKey('permissions.id', ondelete='cascade'), nullable=False)
-
-    created_at = Column(DateTime, default=datetime.now())
-    updated_at = Column(DateTime, onupdate=datetime.now())
