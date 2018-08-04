@@ -13,6 +13,7 @@
 
     <!-- Theme style -->
     <link rel="stylesheet" href="/static/css/adminlte.min.css" />
+    <link rel="stylesheet" href="/static/css/custom.css" />
 
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
@@ -42,29 +43,28 @@
                 <form method="post">
                     {{ form.hidden_tag() }}
                     <div class="input-group mb-3">
-                        {{ form.email(class="form-control", placeholder="Email") }}
+                        {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else ''), placeholder="Email") }}
                         <div class="input-group-append">
-                            <span class="fa fa-envelope input-group-text"></span>
+                            <span class="fa fa-envelope input-group-text {{ 'input-group-invalid' if form.password.errors }}"></span>
                         </div>
+                        {% for error in form.email.errors %}
+                            <span class="invalid-feedback">{{ error }}</span>
+                        {% endfor %}
                     </div>
-                    {% for error in form.email.errors %}
-                        <span class="text-danger">{{ error }}</span>
-                    {% endfor %}
                     <div class="input-group mb-3">
-                        {{ form.password(class="form-control", placeholder="Password") }}
+                        {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else ''), placeholder="Password") }}
                         <div class="input-group-append">
-                            <span class="fa fa-lock input-group-text"></span>
+                            <span class="fa fa-lock input-group-text {{ 'input-group-invalid' if form.password.errors }}"></span>
                         </div>
+                        {% for error in form.password.errors %}
+                            <span class="invalid-feedback">{{ error }}</span>
+                        {% endfor %}
                     </div>
-                    {% for error in form.password.errors %}
-                        <span class="text-danger">{{ error }}</span>
-                    {% endfor %}
                     <div class="row">
                         <div class="col-8">
-                            <div class="checkbox">
-                                <label>
-                                    {{ form.remember_me() }} {{ form.remember_me.label }}
-                                </label>
+                            <div class="form-check form-check-inline">
+                                {{ form.remember_me(class="form-check-input") }}
+                                {{ form.remember_me.label(class="form-check-label") }}
                             </div>
                         </div>
                         <!-- /.col -->

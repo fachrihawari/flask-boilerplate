@@ -1,3 +1,10 @@
 .bg-primary a.dropdown-item {
     color: #212529 !important;
 }
+
+.input-group-invalid {
+    border-top-right-radius: .25rem !important;
+    border-bottom-right-radius: .25rem !important;
+    color: #dc3545 !important;
+    border-color: #dc3545;
+}
