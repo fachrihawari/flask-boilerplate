@@ -8,3 +8,7 @@
     color: #dc3545 !important;
     border-color: #dc3545;
 }
+
+.iconpicker-popover.popover {
+    width: 235px;
+}
