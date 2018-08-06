@@ -1,3 +1,5 @@
+{% from 'admin/macro/flash.html' import flash_messages %}
+
 <!doctype html>
 <html lang="en">
 
@@ -52,6 +54,7 @@
 			<!-- Main content -->
 			<div class="content">
 				<div class="container-fluid">
+					{{ flash_messages() }}
 					{% block content %}{% endblock %}
 				</div>
 				<!-- /.container-fluid -->
