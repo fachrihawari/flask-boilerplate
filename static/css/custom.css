@@ -12,3 +12,7 @@
 .iconpicker-popover.popover {
     width: 235px;
 }
+
+.inline {
+    display: inline;
+}

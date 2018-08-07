@@ -1,0 +1,75 @@
+{% extends 'admin/base.html' %} 
+{% from 'admin/macro/pagination.html' import render_pagination %} 
+
+{% block title %} Menu {% endblock %} 
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Menu List</h3>
+    <div class="card-tools">
+      <a class="btn btn-sm btn-primary float-right" href="{{ url_for('core.admin_menu_create') }}">
+        <i class="fa fa-plus"></i> Create
+      </a>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Group</th>
+          <th style="width: 10px">#</th>
+          <th>Label</th>
+          <th>Target</th>
+          <th>Is Active</th>
+          <th width="140px">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if menus %}
+          {% for menu in menus %}
+            <tr>
+              <td>{{ menu.group }}</td>
+              <td>{{ menu.position }}</td>
+              <td>{{ menu.label }}</td>
+              <td>{{ menu.target }}</td>
+              <td>{{ menu.is_active }}</td>
+              <td>
+                {% if menu.is_active %}
+                  <form class="inline" action="{{ url_for('core.admin_menu_toggle_active', id=menu.id) }}" method="post" onsubmit="return confirm('Do you really want to activate the menu?');">
+                    <button class="btn btn-sm btn-default" title="Deactivate">
+                      <i class="fa fa-toggle-on"></i> 
+                    </button>
+                  </form>
+                {% else %}
+                  <form class="inline" action="{{ url_for('core.admin_menu_toggle_active', id=menu.id) }}" method="post" onsubmit="return confirm('Do you really want to deactivate the menu?');">
+                    <button class="btn btn-sm btn-default" title="Activate">
+                      <i class="fa fa-toggle-off"></i> 
+                    </button>
+                  </form>
+                {% endif %}
+                <a class="btn btn-sm btn-warning" title="Edit" href="{{ url_for('core.admin_menu_edit', id=menu.id) }}">
+                  <i class="fa fa-pencil"></i> 
+                </a>
+                <form class="inline"  action="{{ url_for('core.admin_menu_delete', id=menu.id) }}" method="post" onsubmit="return confirm('Do you really want to delete this menu?');">
+                  <button class="btn btn-sm btn-danger" title="Delete">
+                    <i class="fa fa-trash"></i> 
+                  </button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer">
+    <div class="card-tools">
+        {{ render_pagination(pagination) }}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

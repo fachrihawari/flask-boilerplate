@@ -1,0 +1,9 @@
+{% macro is_invalid(field) %}
+    {{ " is-invalid" if field.errors else '' }}
+{% endmacro %}
+
+{% macro validation_messages(field) %}
+    {% for error in field.errors %}
+        <span class="invalid-feedback">{{ error }}</span>
+    {% endfor %}
+{% endmacro %}

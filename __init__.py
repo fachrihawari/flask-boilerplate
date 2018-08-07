@@ -63,9 +63,17 @@ def setup_jinja(app):
         Load admin menu
         '''    
         from .blueprints.core.models.menu import Menu
-        menu = Menu.query.filter(Menu.group == 'admin.sidebar').order_by(Menu.position).all()
+        menu = Menu.query.filter(Menu.group == 'admin.sidebar', Menu.is_active).order_by(Menu.position).all()
         return dict(admin_sidebar_menu=menu)
+
+    def url_for_other_page(page):
+        from flask import request, url_for
+        args = request.view_args.copy()
+        args['page'] = page
+        return url_for(request.endpoint, **args)
         
+    app.jinja_env.globals['url_for_other_page'] = url_for_other_page
+            
 def autoloader(app):
     '''
     Autoload defined blueprint on BLUEPRINTS from config.py
